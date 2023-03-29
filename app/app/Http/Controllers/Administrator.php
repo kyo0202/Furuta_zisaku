@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class HorseController extends Controller
+class Administrator extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +13,7 @@ class HorseController extends Controller
      */
     public function index()
     {
-        return view('horse.index');
+        return view('administrator.index');
     }
 
     /**
@@ -23,7 +23,7 @@ class HorseController extends Controller
      */
     public function create()
     {
-        return view('horse.create');
+        return view('administrator.create');
     }
 
     /**
@@ -34,28 +34,27 @@ class HorseController extends Controller
      */
     public function store(Request $request)
     {
-        
         return redirect('/');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Administrator  $administrator
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Administrator $administrator)
     {
-
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Administrator  $administrator
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Administrator $administrator)
     {
         //
     }
@@ -64,10 +63,10 @@ class HorseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Administrator  $administrator
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Administrator $administrator)
     {
         //
     }
@@ -75,10 +74,10 @@ class HorseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Administrator  $administrator
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Administrator $administrator)
     {
         //
     }

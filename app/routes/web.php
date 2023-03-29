@@ -19,3 +19,5 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::resource('horse', 'HorseController');
+Route::resource('profile', 'ProfileController');
+Route::resource('administrator', 'Administrator');
