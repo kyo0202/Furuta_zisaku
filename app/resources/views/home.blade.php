@@ -11,7 +11,7 @@
             <div class="col-xs-2">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="収支　条件検索">
-                    <a href="{{route('.search')}}" button class="btn btn-outline-success" type="button" id="button-addon2"><i class="fas fa-search"></i> 検索</button></a>
+                    <a href="{{route('search.index')}}" button class="btn btn-outline-success" type="button" id="button-addon2"><i class="fas fa-search"></i> 検索</button></a>
                 </div>
             </div>
             <div class="col">

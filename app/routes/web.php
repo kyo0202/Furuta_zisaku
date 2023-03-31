@@ -21,4 +21,5 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::resource('horse', 'HorseController');
 Route::resource('profile', 'ProfileController');
 Route::resource('administrator', 'Administrator');
+Route::post('race_create', 'HomeController@rececreate')->name('race_create');
 Route::resource('search', 'SearchController');

@@ -23,13 +23,16 @@ class HorseController extends Controller
      */
     public function create()
     {
+        // $idevtification =[];
+        // $idevtification = ['単勝', '複勝', '馬連', '馬単', 'ワイド', '三連複', '三連複',];
+
         for ($a = 1; $a < 19; $a++) {
             $b[] = $a;
         };
-        return view('horse.create',[
-         'b'=>$b
-        ]);
-
+        return view('horse.create', [
+            'b' => $b
+            // 'idevtification' => $idevtification
+        ]);;
     }
 
     /**
