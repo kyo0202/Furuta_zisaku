@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class HorseController extends Controller
+class SearchController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +13,7 @@ class HorseController extends Controller
      */
     public function index()
     {
-        return view('horse.index');
+        return view('search.index');
     }
 
     /**
@@ -23,13 +23,7 @@ class HorseController extends Controller
      */
     public function create()
     {
-        for ($a = 1; $a < 19; $a++) {
-            $b[] = $a;
-        };
-        return view('horse.create',[
-         'b'=>$b
-        ]);
-
+        //
     }
 
     /**
@@ -40,28 +34,27 @@ class HorseController extends Controller
      */
     public function store(Request $request)
     {
-        
-        return redirect('/');
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Search  $search
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Search $search)
     {
-
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Search  $search
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Search $search)
     {
         //
     }
@@ -70,10 +63,10 @@ class HorseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Search  $search
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Search $search)
     {
         //
     }
@@ -81,10 +74,10 @@ class HorseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Search  $search
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Search $search)
     {
         //
     }

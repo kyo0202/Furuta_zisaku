@@ -8,20 +8,13 @@
             <a href="{{route('profile.index')}}">ユーザー名</a>
         </div>
         <div class=" col">
-            <div class="col-xs-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="収支　条件検索">
-                    <a href="{{route('.search')}}" button class="btn btn-outline-success" type="button" id="button-addon2"><i class="fas fa-search"></i> 検索</button></a>
-                </div>
-            </div>
             <div class="col">
                 <div class="text-right">
                     <a href="{{route('horse.create')}}" class="btn btn-primary">馬券登録ページ</a>
                     <a href="{{route('horse.index')}}" class="btn btn-success">収支ランキングページ</a>
                 </div>
                 <div class="text-right">
-                    <a href="{{route('administrator.create')}}" class="btn btn-warning">レース結果登録</a>
-                    <a href="{{route('administrator.index')}}" class="btn btn-danger">ユーザー一覧・削除</a>
+                    <a href="{{route('home')}}" class="btn btn-warning">トップへ戻る</a>
                 </div>
             </div>
         </div>
