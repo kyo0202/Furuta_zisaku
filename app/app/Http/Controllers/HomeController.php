@@ -36,22 +36,17 @@ class HomeController extends Controller
         $race_details->race_name = $request->race_name;
         $race_details->save();
 
-        $date= "";
-        $place= "";
-        $race_name= "";
-
-        $race_details = Race_detail::where('date', 'place', 'race_name',)->get(); 
-
+        $race_details = Race_detail::orderBy('id', 'desc')->take(1)->get();
+        
         for ($a = 1; $a < 19; $a++) {
             $b[] = $a;
         };
         return view('administrator.create2', [
             'b' => $b,
-            'date' => $date,
-            'place' => $place,
-            'race_name' => $race_name
+            'race_details'=> $race_details
         ]);
           
         
     }
+
 }

@@ -15,19 +15,19 @@
         <div class="card-body">
             <div class="card-body">
                 <table class='table'>
- 
+
                     <tbody>
                         <!-- ここに収入を表示する -->
-                        @foreach($$race_details as $race_detail)
+                        @foreach($race_details as $race_detail)
                         <tr>
                             <th scope='col'>{{ $race_detail['date'] }}</th>
                             <th scope='col'>{{ $race_detail['place'] }}</th>
-                            <th scope='col'>{{ $race_detail['race_namet'] }}</th>
+                            <th scope='col'>{{ $race_detail['race_name'] }}</th>
                         </tr>
+                        <input name="race_detail_id" value="{{$race_detail['id']}}" type="hidden">
                         @endforeach
                     </tbody>
                 </table>
-                
                 <div class="form-row mb-12">
                     <div class="col-md-6">
                         <label>1着</label>

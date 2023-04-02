@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Result_registration;
 use App\Race_result;
 
 
@@ -42,9 +41,6 @@ class Administrator extends Controller
      */
     public function store(Request $request)
     {
-
-        return redirect('administrator.create2');
-
         $wide1= $request->wide1;
         $wide2 = $request->wide2;
         $wide3 = $request->wide3;
@@ -72,6 +68,8 @@ class Administrator extends Controller
         $race_results->wide = $wide;
         $race_results->multiple_wins= $multiple_wins;
 
+        $race_results->race_details_id =$request->race_detail_id;
+
         $race_results->save();
 
     
@@ -97,7 +95,7 @@ class Administrator extends Controller
      */
     public function edit(Administrator $administrator)
     {
-        //
+        return view();
     }
 
     /**
@@ -109,7 +107,7 @@ class Administrator extends Controller
      */
     public function update(Request $request, Administrator $administrator)
     {
-        //
+        
     }
 
     /**
@@ -120,7 +118,20 @@ class Administrator extends Controller
      */
     public function destroy(Administrator $administrator)
     {
-        //
+        return view();
     }
 
+    public function index2(Request $request)
+    {
+        # race_resultsテーブルのレコードを全件取得
+        $list = Race_result::orderBy('created_at', 'desc')->get();
+
+        $list->date = $request->date;
+        $list->place = $request->place;
+        $list->race_name = $request->race_name;
+
+        # data連想配列に代入&Viewファイルをindex2.blade.phpに指定
+        return view('administrator.index2', ['list' => $list]);
+    }
+        
 }

@@ -20,6 +20,7 @@
                     <a href="{{route('horse.index')}}" class="btn btn-success">収支ランキングページ</a>
                 </div>
                 <div class="text-right">
+                    <a href="{{route('index2')}}" class="btn btn-warning">レース結果一覧・削除</a>
                     <a href="{{route('administrator.create')}}" class="btn btn-warning">レース結果登録</a>
                     <a href="{{route('administrator.index')}}" class="btn btn-danger">ユーザー一覧・削除</a>
                 </div>

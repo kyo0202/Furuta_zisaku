@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\Administrator;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,3 +23,4 @@ Route::resource('profile', 'ProfileController');
 Route::resource('administrator', 'Administrator');
 Route::post('race_create', 'HomeController@rececreate')->name('race_create');
 Route::resource('search', 'SearchController');
+Route::get('/index2', [Administrator::class,'index2'])->name('index2');
