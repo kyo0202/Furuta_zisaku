@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <!-- Navigation -->
 <nav class="navbar navbar-light navbar-dark bg-dark">

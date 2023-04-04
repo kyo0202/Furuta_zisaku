@@ -34,6 +34,7 @@ class HomeController extends Controller
         $race_details->date = $request->date;
         $race_details->place = $request->place;
         $race_details->race_name = $request->race_name;
+        
         $race_details->save();
 
         $race_details = Race_detail::orderBy('id', 'desc')->take(1)->get();

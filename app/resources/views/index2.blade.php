@@ -2,9 +2,11 @@
 @section('content')
 
 <ul class="list-unstyled">
-    @if(count($list)>0)
     @foreach ($list as $val)
     <tr>
+        <th scope='col'>日付　{{$val->Race_detail->date}}</th>
+        <th scope='col'>開催場所　{{$val->Race_detail->place}}</th>
+        <th scope='col'>レース名　{{$val->Race_detail->race_name}}</th>
         <th scope='col'>単勝　{{$val->win}}</th>
         <th scope='col'>複勝　{{$val->multiple_wins}}</th>
         <th scope='col'>馬連　{{$val->baren}}</th>
@@ -16,8 +18,6 @@
         <a href="{{route('administrator.destroy',$val->id)}}" class="btn btn-danger">削除</a>
         <br>
     </tr>
-
     @endforeach
-    @endif
 </ul>
 @endsection
