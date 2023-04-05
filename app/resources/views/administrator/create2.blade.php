@@ -10,11 +10,9 @@
 
     <form action="{{route('administrator.store')}}" method="post" class="needs-validation" novalidate>
         @csrf
-
         <div class="card-body">
             <div class="card-body">
                 <table class='table'>
-
                     <tbody>
                         <!-- ここに収入を表示する -->
                         @foreach($race_details as $race_detail)

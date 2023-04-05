@@ -1,5 +1,4 @@
 <?php
-use App\Http\Controllers\Administrator;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,11 +15,15 @@ use App\Http\Controllers\Administrator;
 // });
 
 Auth::routes();
+Route::group(['middleware' => ['auth', 'can:admin_only']], function () {
+    Route::post('race_create', 'HomeController@rececreate')->name('race_create');
+    Route::resource('administrator', 'Administrator');
+});
 
+Route::get('/index2', 'Administrator@index2')->name('index2');
+Route::get('/index3/{id}','Administrator@index3')->name('administrator.index3');
 Route::get('/', 'HomeController@index')->name('home');
 Route::resource('horse', 'HorseController');
 Route::resource('profile', 'ProfileController');
 Route::resource('administrator', 'Administrator');
-Route::post('race_create', 'HomeController@rececreate')->name('race_create');
 Route::resource('search', 'SearchController');
-Route::get('/index2', [Administrator::class,'index2'])->name('index2');

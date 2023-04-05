@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@can('admin_only')
 <!-- Navigation -->
 <nav class="navbar navbar-light navbar-dark bg-dark">
     <a class="navbar-brand" href="#">レース結果登録画面</a>
@@ -39,4 +40,5 @@
 </div>
 
 </div><!-- /container -->
+@endcan
 @endsection

@@ -1,6 +1,7 @@
 @extends('layouts.app')
-@section('content')
 
+@section('content')
+@can('admin_only')
 <ul class="list-unstyled">
     @foreach ($list as $val)
     <tr>
@@ -15,9 +16,10 @@
         <th scope='col'>三連複　{{$val->triplets}}</th>
         <th scope='col'>三連単　{{$val->trio}}</th>
         <a href="{{route('administrator.edit',$val->id)}}" class="btn btn-warning">編集</a>
-        <a href="{{route('administrator.destroy',$val->id)}}" class="btn btn-danger">削除</a>
+        <a href="{{route('administrator.index3',$val->id)}}" class="btn btn-danger">削除</a>
         <br>
     </tr>
     @endforeach
 </ul>
+@endcan
 @endsection

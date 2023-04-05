@@ -9,6 +9,7 @@
 <!-- Page Content -->
 <div class="container mt-5 p-lg-5 bg-light">
     <form action="{{ route('administrator.update',$val->id )}}" method="post" class="needs-validation" novalidate>
+        <input type="hidden" name="_method" value="PUT">
         @method('PUT')
         @csrf
 
