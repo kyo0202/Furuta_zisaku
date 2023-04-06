@@ -169,7 +169,7 @@ class Administrator extends Controller
     //ユーザー一覧後で　デストロイはアップデートと同じように別のブレードを経由してから
     public function destroy(int $id)
     {
-        $post = User::find($id);
+        $post = Race_result::find($id);
         $post->delete();
         return redirect(route('index2'));
     }

@@ -19,7 +19,9 @@
         <div class="col-md-12">
             <label for="place">開催場所</label>
             <select name='type_id' class='form-control'>
-                <option value='' hidden>カテゴリ</option>
+                @foreach($race_details as $race_detail)
+                <option value="{{$race_detail['place']}}">{{$race_detail['place']}}</option>
+                @endforeach
             </select>
             <!--開催場所-->
         </div>
@@ -28,16 +30,20 @@
         <div class="col-md-12">
             <label for="race_name ">レース選択</label>
             <select name='type_id' class='form-control'>
-                <option value='' hidden>カテゴリ</option>
+                @foreach($race_details as $race_detail)
+                <option value="{{$race_detail->race_name}}">{{$race_detail->race_name}}</option>
+                @endforeach
             </select>
         </div>
         <br><br>
         <!--レース選択-->
         <!--式別-->
         <div class="col-md-12">
-            <label for="devtification">式別</label>
+            <label for="idevtification">式別</label>
             <select name='type_id' class='form-control'>
-                <option value='' hidden>カテゴリ</option>
+                @foreach($idevtifications as $idevtification)
+                <option value="{{$idevtification}}">{{$idevtification}}</option>
+                @endforeach
             </select>
         </div>
         <br><br>
@@ -47,7 +53,7 @@
         <div class="form-row mb-12">
             <div class="col-md-4">
                 <label for="number">馬番　1頭目</label>
-                <select name='third_place' class='form-control'>
+                <select name='third_place' class='form-control' multiple>
                     @foreach($b as $c)
                     <option value="{{$c}}">{{$c}}</option>
                     @endforeach
@@ -55,7 +61,7 @@
             </div>
             <div class="col-md-4">
                 <label for="number">馬番　2頭目</label>
-                <select name='third_place' class='form-control'>
+                <select name='third_place' class='form-control' multiple>
                     @foreach($b as $c)
                     <option value="{{$c}}">{{$c}}</option>
                     @endforeach
@@ -63,7 +69,7 @@
             </div>
             <div class="col-md-4">
                 <label for="number">馬番　3頭目</label>
-                <select name='third_place' class='form-control'>
+                <select name='third_place' class='form-control' multiple>
                     @foreach($b as $c)
                     <option value="{{$c}}">{{$c}}</option>
                     @endforeach

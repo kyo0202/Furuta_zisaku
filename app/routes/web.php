@@ -27,3 +27,5 @@ Route::resource('horse', 'HorseController');
 Route::resource('profile', 'ProfileController');
 Route::resource('administrator', 'Administrator');
 Route::resource('search', 'SearchController');
+Route::resource('userdestroy', 'UserdestroyController');
+Route::get('/destroy/{id}', 'UserdestroyController@destroyform')->name('destroyform');
