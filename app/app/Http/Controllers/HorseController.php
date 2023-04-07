@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Betting_ticket_registration; 
 use App\Race_detail;
-use App\Betting_ticket_registration;
+use Illuminate\Support\Facades\Auth;
 
 class HorseController extends Controller
 {
@@ -15,6 +16,7 @@ class HorseController extends Controller
      */
     public function index()
     {
+        
     }
 
     /**
@@ -29,8 +31,8 @@ class HorseController extends Controller
         for ($a = 1; $a < 19; $a++) {
             $b[] = $a;
         };
-
-        $race_details = Race_detail::select('place','race_name')->get();
+        $race_details = Race_detail::orderBy('id', 'desc')->get();
+        // $race_details = Race_detail::select('place','race_name')->get();
         return view('horse.create', [
             'race_details' => $race_details,
             'b' => $b, 
@@ -46,16 +48,15 @@ class HorseController extends Controller
      */
     public function store(Request $request)
     {
-        $betting_ticket_registrations =new Betting_ticket_registration;
-        $betting_ticket_registrations->date = $request->date;
-        $betting_ticket_registrations->place = $request->place;
-        $betting_ticket_registrations->race_name = $request->race_name;
+
+        $betting_ticket_registrations = new Betting_ticket_registration;
+        $betting_ticket_registrations->race_details_id = $request->race_details_id;
         $betting_ticket_registrations->idevtification = $request->idevtification;
         $betting_ticket_registrations->first_num = $request->first_num ;
         $betting_ticket_registrations->second_num = $request->second_num;
         $betting_ticket_registrations->third_num = $request->third_num;
         $betting_ticket_registrations->amount = $request->amount;
-
+        $betting_ticket_registrations->user_id = Auth::id();
         $betting_ticket_registrations->save();
 
         return redirect('/');

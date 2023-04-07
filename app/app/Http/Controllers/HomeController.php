@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Race_detail;
 
+use App\Betting_ticket_registration;
+
+use App\Auth;
+
 class HomeController extends Controller
 {
     /**
@@ -23,9 +27,38 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        $betting_ticket_registrations = new Betting_ticket_registration;
+        // $betting_ticket_registrations = $betting_ticket_registrations->get();
+        $betting_ticket_registrations = $betting_ticket_registrations
+        ->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id' )->get();
+
+        // $user_id = Auth::id();
+        $from = $request->input('from');
+        $until = $request->input('until');
+
+        // // sum()でamountの合計を足す。
+        // foreach($betting_ticket_registrations as $val){
+
+            $total_b=Betting_ticket_registration::selectRaw('sum(amount)as total_b' )->first();
+        $string = $total_b;
+        $num = preg_replace('/[^0-9]/', '', $string);
+
+// dd($total_b);
+        // 日付検索
+        if (isset($from) && isset($until)) {
+
+            $betting_ticket_registrations = $betting_ticket_registrations->whereBetween("date", [$from, $until])->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id')->get();
+        }
+        return view('home', [
+            'betting_ticket_registrations' => $betting_ticket_registrations,
+            'from' => $from,
+            'until' => $until,
+            'num' => $num,
+        ]);
+
+        return view('/', compact('from', 'until',));
     }
 
     public function rececreate(Request $request)
@@ -44,7 +77,7 @@ class HomeController extends Controller
         };
         return view('administrator.create2', [
             'b' => $b,
-            'race_details'=> $race_details
+            'race_details'=> $race_details,
         ]);
           
         

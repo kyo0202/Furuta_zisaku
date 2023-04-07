@@ -11,36 +11,21 @@
 
     <form action="{{route('horse.store')}}" method="post" class="needs-validation" novalidate>
         @csrf
-        <!--日付-->
-        <label for='date'>日付</label>
-        <input type='date' class='form-control' name='date' id='date' />
-        <br><br>
-        <!--開催場所-->
         <div class="col-md-12">
-            <label for="place">開催場所</label>
-            <select name='type_id' class='form-control'>
+            <label for="race_details_id">日付 開催場所 レース </label>
+            <select name=race_details_id class='form-control'>
                 @foreach($race_details as $race_detail)
-                <option value="{{$race_detail['place']}}">{{$race_detail['place']}}</option>
+                <option value="{{$race_detail['id']}}">{{$race_detail['date']}} {{$race_detail['place']}} {{$race_detail->race_name}}</option>
                 @endforeach
             </select>
             <!--開催場所-->
         </div>
         <br><br>
-        <!--レース選択-->
-        <div class="col-md-12">
-            <label for="race_name ">レース選択</label>
-            <select name='type_id' class='form-control'>
-                @foreach($race_details as $race_detail)
-                <option value="{{$race_detail->race_name}}">{{$race_detail->race_name}}</option>
-                @endforeach
-            </select>
-        </div>
-        <br><br>
-        <!--レース選択-->
+
         <!--式別-->
         <div class="col-md-12">
             <label for="idevtification">式別</label>
-            <select name='type_id' class='form-control'>
+            <select name=idevtification class='form-control'>
                 @foreach($idevtifications as $idevtification)
                 <option value="{{$idevtification}}">{{$idevtification}}</option>
                 @endforeach
@@ -53,7 +38,7 @@
         <div class="form-row mb-12">
             <div class="col-md-4">
                 <label for="number">馬番　1頭目</label>
-                <select name='third_place' class='form-control' multiple>
+                <select name=first_num class='form-control' multiple>
                     @foreach($b as $c)
                     <option value="{{$c}}">{{$c}}</option>
                     @endforeach
@@ -61,7 +46,7 @@
             </div>
             <div class="col-md-4">
                 <label for="number">馬番　2頭目</label>
-                <select name='third_place' class='form-control' multiple>
+                <select name=second_num class='form-control' multiple>
                     @foreach($b as $c)
                     <option value="{{$c}}">{{$c}}</option>
                     @endforeach
@@ -69,7 +54,7 @@
             </div>
             <div class="col-md-4">
                 <label for="number">馬番　3頭目</label>
-                <select name='third_place' class='form-control' multiple>
+                <select name=third_num class='form-control' multiple>
                     @foreach($b as $c)
                     <option value="{{$c}}">{{$c}}</option>
                     @endforeach
@@ -80,8 +65,8 @@
         <br><br>
         <!--備考欄-->
         <div class="col-md-12">
-            <label for='amount'>金額</label>
-            <input type='text' class='form-control' name='amount' />
+            <label for=amount>金額</label>
+            <input type=amount class='form-control' name=amount  />
         </div>
         <!--/備考欄-->
         <br><br>
