@@ -56,7 +56,7 @@ class HorseController extends Controller
         $betting_ticket_registrations->second_num = $request->second_num;
         $betting_ticket_registrations->third_num = $request->third_num;
         $betting_ticket_registrations->amount = $request->amount;
-        $betting_ticket_registrations->user_id = Auth::id();
+        // $betting_ticket_registrations->user_id = Auth::id();
         $betting_ticket_registrations->save();
 
         return redirect('/');
@@ -71,6 +71,7 @@ class HorseController extends Controller
     public function show($id)
     {
 
+       return view();
     }
 
     /**

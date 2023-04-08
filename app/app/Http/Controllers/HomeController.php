@@ -8,8 +8,6 @@ use App\Race_detail;
 
 use App\Betting_ticket_registration;
 
-use App\Auth;
-
 class HomeController extends Controller
 {
     /**
@@ -38,18 +36,13 @@ class HomeController extends Controller
         $from = $request->input('from');
         $until = $request->input('until');
 
-        // // sum()でamountの合計を足す。
-        // foreach($betting_ticket_registrations as $val){
-
-            $total_b=Betting_ticket_registration::selectRaw('sum(amount)as total_b' )->first();
+        $total_b=Betting_ticket_registration::selectRaw('sum(amount)as total_b' )->first();
         $string = $total_b;
         $num = preg_replace('/[^0-9]/', '', $string);
-
-// dd($total_b);
         // 日付検索
         if (isset($from) && isset($until)) {
 
-            $betting_ticket_registrations = $betting_ticket_registrations->whereBetween("date", [$from, $until])->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id')->get();
+        $betting_ticket_registrations = $betting_ticket_registrations->whereBetween("date", [$from, $until])->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id')->get();
         }
         return view('home', [
             'betting_ticket_registrations' => $betting_ticket_registrations,
@@ -79,7 +72,6 @@ class HomeController extends Controller
             'b' => $b,
             'race_details'=> $race_details,
         ]);
-          
         
     }
 
