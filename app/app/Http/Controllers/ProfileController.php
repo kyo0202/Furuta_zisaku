@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\User;
+
+use Illuminate\Support\Facades\Auth;
+
 class ProfileController extends Controller
 {
     /**
@@ -13,7 +17,11 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return view('profile.index');
+        $image = User::find(Auth::id());
+
+        return view('profile.index', [
+        'image' => $image,
+        ]);
     }
 
     /**
@@ -81,4 +89,25 @@ class ProfileController extends Controller
     {
         //
     }
+
+    public function upload(Request $request)
+    {
+        // ディレクトリ名
+        $dir = 'sample';
+
+        // アップロードされたファイル名を取得
+        $file_name = $request->file('image')->getClientOriginalName();
+
+        // 取得したファイル名で保存
+        $request->file('image')->storeAs('public/sample'. $dir, $file_name);
+
+        // ファイル情報をDBに保存
+        $image = User::find(Auth::id());
+        $image->image_name = $file_name;
+        $image->image_path = 'storage/' . $dir . '/' . $file_name;
+        $image->save();
+
+        return redirect('/profile');
+    }
 }
+

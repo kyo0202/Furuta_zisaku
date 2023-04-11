@@ -2,18 +2,19 @@
 @section('content')
 <main class="py-4">
     <div class="row justify-content-around">
-        <div class="col-md-4">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <form action="{{route('horse.show')}}">
-                        <div class='text-center'>詳細画面</div>
+                    <div class='text-center'>詳細画面</div>
                 </div>
                 <div class="card-body">
                     <div class="card-body">
                         <table class='table'>
                             <thead>
                                 <tr>
-                                    <th scope='col'>日付 開催場所 レース</th>
+                                    <th scope='col'>日付</th>
+                                    <th scope='col'>開催場所</th>
+                                    <th scope='col'>レース名</th>
                                     <th scope='col'>式別</th>
                                     <th scope='col'>馬番　1頭目</th>
                                     <th scope='col'>馬番　2頭目</th>
@@ -24,42 +25,24 @@
                             <tbody>
                                 <!-- ここに収入を表示する -->
                                 <tr>
-                                <tr>
-                                    <th scope='col'>{{ $race_detail->race_details_id }}</th>
-                                    <th scope='col'>{{ $race_detail->idevtifications }}</th>
-                                    <th scope='col'>{{ $race_detail->first_num}}</th>
-                                    <th scope='col'>{{ $race_detail->second_num }}</th>
-                                    <th scope='col'>{{ $race_detail->third_num }}</th>
-                                    <th scope='col'>{{ $race_detail->amount }}</th>
-                                </tr>
+                                    <th scope='col'>{{$val->date}}</th>
+                                    <th scope='col'>{{$val->place}}</th>
+                                    <th scope='col'>{{$val->race_name}}</th>
+                                    <th scope='col'>{{ $betting_ticket_registration->idevtification }}</th>
+                                    <th scope='col'>{{ $betting_ticket_registration->first_num}}</th>
+                                    <th scope='col'>{{ $betting_ticket_registration->second_num }}</th>
+                                    <th scope='col'>{{ $betting_ticket_registration->third_num }}</th>
+                                    <th scope='col'>{{ $betting_ticket_registration->amount }}</th>
                                 </tr>
                             </tbody>
                         </table>
+                        <a href="{{ route('horse.edit',['horse' => $betting_ticket_registration['id']]) }}">
+                            <button class='btn btn-secondary'>編集</button>
+                        </a>
+                        <form action="{{route('horse.destroy',['horse' => $betting_ticket_registration['id']])}}" method="post">
+                            @method('delete')
+                            @csrf
+                            <input type="submit" value="削除" class="btn btn-danger" onclick='return confirm("削除しますか？");'>
+                        </form>    
                     </div>
-                </div>
-            </div>
-        </div>
-        </tr>
-        </tbody>
-        </table>
-    </div>
-    </div>
-    </div>
-    </div>
-</main>
-<a href="{{ route('edit.income',['income' => $incomes['id']]) }}">
-    <button class='btn btn-secondary'>編集</button>
-</a>
-<a href="{{ route('income.destroy',['income' => $incomes['id']]) }}">
-    <button class='btn btn-secondary'>削除</button>
-</a>
-</div>
-</form>
-</body>
-
-</html>
-</div>
-</body>
-
-</html>
-@endsection
+                    @endsection

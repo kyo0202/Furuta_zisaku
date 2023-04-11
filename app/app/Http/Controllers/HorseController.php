@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Betting_ticket_registration; 
 use App\Race_detail;
+use App\User;
 use Illuminate\Support\Facades\Auth;
+
 
 class HorseController extends Controller
 {
@@ -16,7 +18,10 @@ class HorseController extends Controller
      */
     public function index()
     {
-        
+        $users = User::all();
+        return view('horse.index', [
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -70,8 +75,12 @@ class HorseController extends Controller
      */
     public function show($id)
     {
-
-       return view();
+        $val = Race_detail::findOrFail($id);
+        $betting_ticket_registration = Betting_ticket_registration::where('race_details_id',$id)->first();
+        return view('horse.show',[
+            'betting_ticket_registration'=> $betting_ticket_registration,
+            'val' => $val
+       ]);
     }
 
     /**
@@ -82,7 +91,20 @@ class HorseController extends Controller
      */
     public function edit($id)
     {
-        //
+        for ($a = 1; $a < 19; $a++) {
+            $b[] = $a;
+        };
+        $idevtification = [];
+        $idevtification = ['単勝', '複勝', '馬連', '馬単', 'ワイド', '三連複', '三連複',];
+        $betting_ticket_registration = Betting_ticket_registration::find($id);
+        $race_detail=Race_detail::find($betting_ticket_registration->race_details_id);
+        return view('horse.edit', [
+            'b' => $b,
+            'betting_ticket_registration' => $betting_ticket_registration,
+            'race_detail' =>  $race_detail,
+            'idevtifications' =>  $idevtification,
+            'id'=> $betting_ticket_registration->race_details_id,
+        ]);
     }
 
     /**
@@ -94,7 +116,17 @@ class HorseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $betting_ticket_registrations = Betting_ticket_registration::find($id);
+        $betting_ticket_registrations->race_details_id = $request->race_details_id;
+        $betting_ticket_registrations->idevtification = $request->idevtification;
+        $betting_ticket_registrations->first_num = $request->first_num;
+        $betting_ticket_registrations->second_num = $request->second_num;
+        $betting_ticket_registrations->third_num = $request->third_num;
+        $betting_ticket_registrations->amount = $request->amount;
+        $betting_ticket_registrations->user_id = Auth::id();
+        $betting_ticket_registrations->save();
+
+        return redirect('/');
     }
 
     /**
@@ -103,8 +135,11 @@ class HorseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        //
+        $post = Betting_ticket_registration::find($id);
+        $post->delete();
+        return redirect('/');
     }
+
 }

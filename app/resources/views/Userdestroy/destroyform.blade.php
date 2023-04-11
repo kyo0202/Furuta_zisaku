@@ -1,9 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<form action="{{ route('userdestroy.destroy',$val->id )}}" method="post" class="needs-validation" novalidate>
-    <input type="hidden" name="_method" value="delete">
-    @method('delete')
-    @csrf
+<form action="{{route('horse.index',$val->id)}}" method="post" class="needs-validation" novalidate>
     <div class="container">
         <div class="table-responsive">
             <table class="table table-striped">
@@ -13,14 +10,13 @@
                         <th>{{ __('Name') }}</th>
                     </tr>
                 </thead>
-                    <tr>
-                        <td>{{ $user->id }}</td>
+                <tr>
+                    <td>{{ $user->id }}</td>
 
-                        <td><a href="{{ url('users/'.$user->id) }}">{{ $user->name }}</a></td>
-                        <td> <input type="submit" value="削除" class="btn btn-danger" onclick='return confirm("削除しますか？");'></button></td>
-                    </tr>
+                    <td><a href="{{ url('users/'.$users->id) }}">{{ $user->name }}</a></td>
+                </tr>
                 </tbody>
             </table>
+</form>
         </div>
-    </div>
-    @endsection
+@endsection

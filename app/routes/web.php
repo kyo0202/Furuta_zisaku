@@ -29,3 +29,4 @@ Route::resource('administrator', 'Administrator');
 Route::resource('search', 'SearchController');
 Route::resource('userdestroy', 'UserdestroyController');
 Route::get('/destroy/{id}', 'UserdestroyController@destroyform')->name('destroyform');
+Route::post('/upload', 'ProfileController@upload')->name('upload');

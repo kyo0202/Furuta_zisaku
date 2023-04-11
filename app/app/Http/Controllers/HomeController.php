@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Race_detail;
 
+use App\User;
+
+use Illuminate\Support\Facades\Auth;
+
 use App\Betting_ticket_registration;
 
 class HomeController extends Controller
@@ -27,6 +31,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        $image = User::find(Auth::id());
         $betting_ticket_registrations = new Betting_ticket_registration;
         // $betting_ticket_registrations = $betting_ticket_registrations->get();
         $betting_ticket_registrations = $betting_ticket_registrations
@@ -48,10 +53,10 @@ class HomeController extends Controller
             'betting_ticket_registrations' => $betting_ticket_registrations,
             'from' => $from,
             'until' => $until,
-            'num' => $num,
+            'num' => $num, 
+            'image' => $image,
         ]);
 
-        return view('/', compact('from', 'until',));
     }
 
     public function rececreate(Request $request)
@@ -76,3 +81,4 @@ class HomeController extends Controller
     }
 
 }
+ 
