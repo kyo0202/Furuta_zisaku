@@ -3,7 +3,7 @@
 @section('content')
 <div class="col-md-12">
     <div class="card-body">
-        <form method="POST" action="/upload" enctype="multipart/form-data">
+        <form method="POST" action="/upload" enctype="multipart/form-data" >
             @csrf
             <div class="col">
                 <img src="{{asset($image->image_path)}}" width="100" height="100">

@@ -62,8 +62,6 @@
                                                 <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日') }}</a>
                                                 </div>
                                             </td>
-                                            @elseif(empty($betting_ticket_registration['date']))
-                                            <td></td>
                                             @endif
                                             @endforeach
                                         </div>

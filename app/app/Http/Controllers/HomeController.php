@@ -77,7 +77,6 @@ class HomeController extends Controller
             'b' => $b,
             'race_details'=> $race_details,
         ]);
-        
     }
 
 }
