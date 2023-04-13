@@ -31,6 +31,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        
         $image = User::find(Auth::id());
         $betting_ticket_registrations = new Betting_ticket_registration;
         // $betting_ticket_registrations = $betting_ticket_registrations->get();
