@@ -41,21 +41,41 @@ class HomeController extends Controller
         // $user_id = Auth::id();
         $from = $request->input('from');
         $until = $request->input('until');
-
+        //購入した馬券の計算
         $total_b=Betting_ticket_registration::selectRaw('sum(amount)as total_b' )->first();
         $string = $total_b;
         $num = preg_replace('/[^0-9]/', '', $string);
+
+        //払い戻し計算
+        // $total_r = Race_results::selectRaw('pow(amount)as total_b')->first();
+
+        //回収率計算
+
+
         // 日付検索
         if (isset($from) && isset($until)) {
 
-        $betting_ticket_registrations = $betting_ticket_registrations->whereBetween("date", [$from, $until])->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id')->get();
+        $posts = $betting_ticket_registrations->whereBetween("date", [$from, $until])->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id')->get();
         }
+        $keyword = $request->input('keyword');
+
+        $query = Betting_ticket_registration::query();
+
+        if (!empty($keyword)) {
+            $query->where('race_details_id', 'LIKE', "%{$keyword}%")
+            ->orWhere('idevtification', 'LIKE', "%{$keyword}%");
+        }
+
+        $posts = $query->get();
+
         return view('home', [
             'betting_ticket_registrations' => $betting_ticket_registrations,
             'from' => $from,
             'until' => $until,
             'num' => $num, 
             'image' => $image,
+            'posts' => $posts,
+            'keyword' =>$keyword,
         ]);
 
     }

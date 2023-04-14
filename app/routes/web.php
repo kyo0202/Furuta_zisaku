@@ -16,13 +16,12 @@
 
 Auth::routes();
 Route::group(['middleware' => ['auth', 'can:admin_only']], function () {
-    Route::post('race_create', 'HomeController@rececreate')->name('race_create');
     Route::resource('administrator', 'Administrator');
+    Route::post('race_create', 'HomeController@rececreate')->name('race_create');
 });
-
+Route::get('/', 'HomeController@index')->name('home');
 Route::get('/index2', 'Administrator@index2')->name('index2');
 Route::get('/index3/{id}','Administrator@index3')->name('administrator.index3');
-Route::get('/', 'HomeController@index')->name('home');
 Route::resource('horse', 'HorseController');
 Route::resource('profile', 'ProfileController');
 Route::resource('administrator', 'Administrator');

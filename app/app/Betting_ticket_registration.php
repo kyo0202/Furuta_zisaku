@@ -8,6 +8,7 @@ class Betting_ticket_registration extends Model
 {
     protected $fillable =
      [
+        'user.id',
         'date', 
         'place',
         'race_name',
