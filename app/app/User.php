@@ -52,5 +52,9 @@ class User extends Authenticatable
     public function Race_detail()
     {
         return $this->hasMany('App/Race_detail');
-    }   
+    }
+    public function likes()
+    {
+        return $this->hasMany('App\Like');
+    }
 }

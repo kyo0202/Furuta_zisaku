@@ -36,7 +36,7 @@ class HomeController extends Controller
         $betting_ticket_registrations = new Betting_ticket_registration;
         // $betting_ticket_registrations = $betting_ticket_registrations->get();
         $betting_ticket_registrations = $betting_ticket_registrations
-        ->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id' )->get();
+        ->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id' );
 
         // $user_id = Auth::id();
         $from = $request->input('from');
@@ -54,32 +54,27 @@ class HomeController extends Controller
 
         // 日付検索
         if (isset($from) && isset($until)) {
-
-        $posts = $betting_ticket_registrations->whereBetween("date", [$from, $until])->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id')->get();
+            $betting_ticket_registrations = $betting_ticket_registrations->whereBetween("date", [$from, $until]);
         }
         $keyword = $request->input('keyword');
+        if($keyword){
+            // dd($keyword);
+            // 全角スペースを半角に変換
+            $spaceConversion = mb_convert_kana($keyword, 's');
 
-        $query = Betting_ticket_registration::query();
+            // 単語を半角スペースで区切り、配列にする
+            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
 
         if (!empty($keyword)) {
-            $query->where('race_details_id', 'LIKE', "%{$keyword}%")
-            ->orWhere('idevtification', 'LIKE', "%{$keyword}%");
+                // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
+            foreach ($wordArraySearched as $value) {
+            $betting_ticket_registrations = $betting_ticket_registrations
+            ->where('idevtification', 'LIKE', "%{$value}%")
+            ->orWhere('place', 'LIKE', "%{$value}%");
+                }
         }
-
-        $posts = $query->get();
-
-            //     $keyword = $request->input('keyword');
-    //     $query = Betting_ticket_registration::query();
-
-    //      if (isset($from) && isset($until)||!empty($keyword)) {
-
-    //          $posts = $betting_ticket_registrations->whereBetween("date", [$from, $until])->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id')->get();
-    //    dd($posts);
-    //          $query->where('race_details_id', 'LIKE', "%{$keyword}%")
-    //     ->orWhere('idevtification', 'LIKE', "%{$keyword}%");
-        
-    //     }
-    //     $posts = $query->get();
+    }
+        $betting_ticket_registrations = $betting_ticket_registrations->where('user_id',Auth::id())->get();
 
         return view('home', [
             'betting_ticket_registrations' => $betting_ticket_registrations,
@@ -87,7 +82,6 @@ class HomeController extends Controller
             'until' => $until,
             'num' => $num, 
             'image' => $image,
-            'posts' => $posts,
             'keyword' =>$keyword,
         ]);
 

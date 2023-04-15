@@ -8,8 +8,7 @@
                 <a href="{{route('profile.index')}}">{{Auth::user()->name}}</a>
             </div>
             <div class="d-flex justify-content-centar">
-                <form action="{{route('home')}}">
-                    @csrf
+                <form action="{{ route('home') }}" method="GET">
                     <div>
                         <label for="">日付検索</label>
                         <input type="date" name="from" placeholder="from_date" value="{{ $from }}">
@@ -17,15 +16,13 @@
                         <input type="date" name="until" placeholder="until_date" value="{{ $until }}">
 
                     </div>
+                    <div class=" col">
+                        <div class="col-xs-2">
+                            <input type="text" name="keyword" value="{{ $keyword }}">
+                            <input type="submit" value="検索">
+                        </div>
+                    </div>
                 </form>
-            </div>
-            <div class=" col">
-                <div class="col-xs-2">
-                    <form action="{{ route('home') }}" method="GET">
-                        <input type="text" name="keyword" value="{{ $keyword }}">
-                        <input type="submit" value="検索">
-                    </form>
-                </div>
                 <div class="col">
                     <div class="text-right">
                         <a href="{{route('horse.create')}}" class="btn btn-primary">馬券登録ページ</a>
@@ -54,169 +51,32 @@
                                 <div class="card-header">月別収支リスト</div>
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col">
-                                            <div class="card">1月</div>
+                                        @for($i = 1; $i < 13; $i++) <div class="col-3">
+                                            <div class="card">{{$i}}月</div>
                                             @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(1==$betting_ticket_registration->date->format('n'))
+                                            @if($i==$betting_ticket_registration->date->format('n'))
                                             <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日') }}</a>
+                                                <div class="col"><a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日') }} {{$betting_ticket_registration->place}} {{$betting_ticket_registration->idevtification}}</a>
                                                 </div>
                                             </td>
-                                            @endif
-                                            @forelse ($posts as $post)
-                                            @if($betting_ticket_registration->idevtification==$post->idevtification)
-                                            {{ $post->idevtification }}
-                                            @endif
-                                            @empty
-                                            <td>No posts!!</td>
-                                            @endforelse
-                                            @endforeach
-                                        </div>
-                                        <div class=" col">
-                                            <div class="card">2月</div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(2==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日')}}</a></div>
-                                            </td>
-                                            @endif
-                                            @forelse ($posts as $post)
-                                            @if($betting_ticket_registration->idevtification==$post->idevtification)
-                                            {{ $post->idevtification }}
-                                            @endif
-                                            @empty
-                                            <td>No posts!!</td>
-                                            @endforelse
-                                            @endforeach
-                                        </div>
-                                        <div class="col">
-                                            <div class="card">3月</div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(3==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日') }}</a></div>
-                                            </td>
-                                            @endif
-                                            @forelse ($posts as $post)
-                                            @if($betting_ticket_registration->idevtification==$post->idevtification)
-                                            {{ $post->idevtification }}
-                                            @endif
-                                            @empty
-                                            <td>No posts!!</td>
-                                            @endforelse
-                                            @endforeach
-                                        </div>
-                                        <div class="col">
-                                            <div class="card">4月</div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(4==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日')}}</a></div>
-                                            </td>
+                                            @elseif(empty($betting_ticket_registration->date->format('n')))
+                                            <td> </td>
                                             @endif
                                             @endforeach
-                                        </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="card">5月</div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(5==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日')}}</a></div>
-                                            </td>
-                                            @endif
-                                            @endforeach
-                                        </div>
-                                        <div class="col">
-                                            <div class="card">6月</div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(6==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日')}}</a></div>
-                                            </td>
-                                            @endif
-                                            @endforeach
-                                        </div>
-                                        <div class="col">
-                                            <div class="card">7月</div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(7==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日')}}</a></div>
-                                            </td>
-                                            @endif
-                                            @endforeach
-                                        </div>
-                                        <div class="col">
-                                            <div class="card">8月</div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(8==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日')}}</a></div>
-                                            </td>
-                                            @endif
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="card">9月</div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(9==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日')}}</a></div>
-                                            </td>
-                                            @endif
-                                            @endforeach
-                                        </div>
-                                        <div class="col">
-                                            <div class="card">10月</div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(10==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日')}}</a></div>
-                                            </td>
-                                            @endif
-                                            @endforeach
-                                        </div>
-                                        <div class="col">
-                                            <div class="card">11月</div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(11==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日')}}</a></div>
-                                            </td>
-                                            @endif
-                                            @endforeach
-                                        </div>
-                                        <div class="col">
-                                            <div class="card">12月</div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if(12==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"> 日 付　<a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日')}}</a></div>
-                                            </td>
-                                            @endif
-                                            @endforeach
-                                            </table>
-                                        </div>
-
-
-
-
-                                    </div>
-                                    <div class="card-body">
-                                        @if (session('status'))
-                                        <div class="alert alert-success" role="alert">
-                                            {{ session('status') }}
-                                        </div>
-                                        @endif
-
-                                    </div>
+                                    @endfor
                                 </div>
-                            </form>
+                                <div class="card-body">
+                                    @if (session('status'))
+                                    <div class="alert alert-success" role="alert">
+                                        {{ session('status') }}
+                                    </div>
+                                    @endif
+
+                                </div>
                         </div>
+                        </form>
                     </div>
                 </div>
-                @endsection
+            </div>
+            @endsection

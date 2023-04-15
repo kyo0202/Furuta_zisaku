@@ -13,7 +13,7 @@
                 @foreach($users as $user)
             <td><img src="{{asset($user->image_path)}}" width="100" height="100"></td>
 
-            <td><a href="{{route('profile.index')}}">{{$user->name}}</a></td>
+            <td><a href="{{route('profile.index')}}">{{$user->name}}</a></td>  
         </tr>
             @endforeach
         </table>
