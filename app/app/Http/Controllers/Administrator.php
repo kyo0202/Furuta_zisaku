@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Race_result;
 use App\Race_detail;
 use App\User;
-
+use App\Http\Requests\Validation2;
 class Administrator extends Controller
 {
     /**
@@ -41,7 +41,7 @@ class Administrator extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Validation2 $request)
     {
         $wide1= $request->wide1;
         $wide2 = $request->wide2;
@@ -123,7 +123,7 @@ class Administrator extends Controller
      * @param  \App\Administrator  $administrator
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $id)
+    public function update(Validation2 $request, int $id)
     {
         {
             $wide1 = $request->wide1;

@@ -8,7 +8,17 @@
 
 <!-- Page Content -->
 <div class="container mt-5 p-lg-5 bg-light">
-
+    <div class='panel-body'>
+        @if($errors->any())
+        <div class='alert alert-danger'>
+            <ul>
+                @foreach($errors->all() as $message)
+                <li>{{ $message}}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+    </div>
     <form action="{{route('horse.store')}}" method="post" class="needs-validation" novalidate>
         @csrf
         <div class="col-md-12">
@@ -66,7 +76,7 @@
         <!--備考欄-->
         <div class="col-md-12">
             <label for=amount>金額</label>
-            <input type=amount class='form-control' name=amount  />
+            <input type=amount class='form-control' name=amount />
         </div>
         <!--/備考欄-->
         <br><br>

@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Betting_ticket_registration;
 
+use App\Http\Requests\Validation;
+
 class HomeController extends Controller
 {
     /**
@@ -87,7 +89,7 @@ class HomeController extends Controller
 
     }
 
-    public function rececreate(Request $request)
+    public function rececreate(Validation $request)
     {
         $race_details = new Race_detail;
         $race_details->date = $request->date;

@@ -7,7 +7,7 @@ use App\Betting_ticket_registration;
 use App\Race_detail;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Requests\CreateDate;
 
 class HorseController extends Controller
 {
@@ -53,7 +53,7 @@ class HorseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateDate $request)
     {
 
         $betting_ticket_registrations = new Betting_ticket_registration;
@@ -116,7 +116,7 @@ class HorseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateDate  $request, $id)
     {
         $betting_ticket_registrations = Betting_ticket_registration::find($id);
         $betting_ticket_registrations->race_details_id = $request->race_details_id;
