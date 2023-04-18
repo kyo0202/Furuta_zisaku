@@ -31,4 +31,9 @@ class Betting_ticket_registration extends Model
     {
         return $val->sum();
     }
+
+    public function pow($val)
+    {
+        return $val->pow();
+    }
 }

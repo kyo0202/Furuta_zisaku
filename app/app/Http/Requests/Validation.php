@@ -27,7 +27,6 @@ class Validation extends FormRequest
             'date' => 'required|date',
             'place' => 'required',
             'race_name' => 'required',
-            
         ];
     }
 }

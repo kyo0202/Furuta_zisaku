@@ -24,20 +24,20 @@ class Validation2 extends FormRequest
     public function rules()
     {
         return [
-            'first_place' => 'required',
-            'second_place' => 'required',
-            'third_place' => 'required',
-            'win' => 'required',
-            'multiple_wins1' => 'required',
-            'multiple_wins2' => 'required',
-            'multiple_wins3' => 'required',
-            'baren' => 'required',
-            'horse_single' => 'required',
-            'wide1' => 'required',
-            'wide2' => 'required',
-            'wide3' => 'required',
-            'triplets' => 'required',
-            'trio' => 'required',
+            'first_place' => 'required|numeric|max:2',
+            'second_place' => 'required|numeric|max:2',
+            'third_place' => 'required|numeric|max:2',
+            'win' => 'required|numeric',
+            'multiple_wins1' => 'required|numeric',
+            'multiple_wins2' => 'required|numeric',
+            'multiple_wins3' => 'required|numeric',
+            'baren' => 'required|numeric',
+            'horse_single' => 'required|numeric',
+            'wide1' => 'required|numeric',
+            'wide2' => 'required|numeric',
+            'wide3' => 'required|numeric',
+            'triplets' => 'required|numeric',
+            'trio' => 'required|numeric',
         ];
     }
 }

@@ -8,7 +8,17 @@
 
 <!-- Page Content -->
 <div class="container mt-5 p-lg-5 bg-light">
-
+    <div class='panel-body'>
+        @if($errors->any())
+        <div class='alert alert-danger'>
+            <ul>
+                @foreach($errors->all() as $message)
+                <li>{{ $message}}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+    </div>
     <form action="{{route('horse.update',$betting_ticket_registration->id )}}" method="post" class="needs-validation" novalidate>
         @csrf
         @method('PUT')

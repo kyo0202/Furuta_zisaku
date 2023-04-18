@@ -44,13 +44,15 @@ class HomeController extends Controller
         $from = $request->input('from');
         $until = $request->input('until');
         //購入した馬券の計算
-        $total_b=Betting_ticket_registration::selectRaw('sum(amount)as total_b' )->first();
+        $total_b=Betting_ticket_registration::selectRaw('sum(amount)as total_b')->where('user_id', Auth::id())->get();
         $string = $total_b;
         $num = preg_replace('/[^0-9]/', '', $string);
 
         //払い戻し計算
-        // $total_r = Race_results::selectRaw('pow(amount)as total_b')->first();
-
+    //     $total_r = Betting_ticket_registration::selectRaw('pow(amount)as total_r')->where('user_id', Auth::id())->get();
+    //     $string = $total_r;
+    //     $num = preg_replace('/[^0-9]/', '', $string);
+    // dd($total_r);
         //回収率計算
 
 

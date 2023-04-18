@@ -26,9 +26,9 @@ class CreateDate extends FormRequest
         return [
             'race_details_id'=> 'required',
             'idevtification'=> 'required',
-            'date'=> 'required|integer',
+            'date'=> 'integer',
             'first_num'=> 'required',
-            'amount'=> 'required|integer',
+            'amount'=> 'required|numeric',
         ];
     }
 }
