@@ -21,12 +21,10 @@ class HorseController extends Controller
     {
         $review=new User;
         $users = User::all();
-        // $review = Like::withCount('user')->orderBy('id', 'desc');
-        // dd($review);
         return view('horse.index', [
             'users' => $users,
             'item' => $users,
-            // 'review' => $review,
+            'review' => $review,
         ]);
     }
 
@@ -162,11 +160,6 @@ class HorseController extends Controller
         } else { //もしこのユーザーがこの投稿に既にいいねしてたらdelete
             Like::where('user_liked_id', $user_liked_id)->where('user_id', $user_id)->delete();
         }
-        //5.この投稿の最新の総いいね数を取得
-        // $user_liked_count = Like::withCount('user_liked_id')->findOrFail($user_liked_id)->likes_count;
-//         $param = [
-//             'user_liked_id_count' => $user_liked_count,
-//         ];
         return response()->json(); //6.JSONデータをjQueryに返す
 }
 

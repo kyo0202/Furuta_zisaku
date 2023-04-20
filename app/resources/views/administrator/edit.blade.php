@@ -8,6 +8,17 @@
 
 <!-- Page Content -->
 <div class="container mt-5 p-lg-5 bg-light">
+    <div class='panel-body'>
+        @if($errors->any())
+        <div class='alert alert-danger'>
+            <ul>
+                @foreach($errors->all() as $message)
+                <li>{{ $message}}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+    </div>
     <form action="{{ route('administrator.update',$val->id )}}" method="post" class="needs-validation" novalidate>
         <input type="hidden" name="_method" value="PUT">
         @method('PUT')
