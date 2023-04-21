@@ -58,7 +58,6 @@ class HomeController extends Controller
         
         if($b_race_details_id->idevtification=='単勝'){
             if($b_race_details_id->first_num === $race_result->first_place){
-                dd($race_result->win);
                 $win=$race_result->win;
                 $amount= $b_race_details_id->amount;
                 $haraimodosi= $win*$amount;
