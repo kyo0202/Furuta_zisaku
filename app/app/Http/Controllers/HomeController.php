@@ -8,6 +8,8 @@ use App\Race_detail;
 
 use App\User;
 
+use App\Race_result;
+
 use Illuminate\Support\Facades\Auth;
 
 use App\Betting_ticket_registration;
@@ -49,12 +51,71 @@ class HomeController extends Controller
         $num = preg_replace('/[^0-9]/', '', $string);
 
         //払い戻し計算
-    //     $total_r = Betting_ticket_registration::selectRaw('pow(amount)as total_r')->where('user_id', Auth::id())->get();
-    //     $string = $total_r;
-    //     $num = preg_replace('/[^0-9]/', '', $string);
-    // dd($total_r);
-        //回収率計算
+        $b_race_details_id = Betting_ticket_registration::where('user_id', Auth::id())->first();
+        $r_details_id = Race_detail::find( $b_race_details_id->race_details_id);
+        $race_result= Race_result::find($r_details_id->race_result_id);
+        $r_num= Race_result::select('first_place', 'second_place', 'third_place')->first();
+        
+        if($b_race_details_id->idevtification=='単勝'){
+            if($b_race_details_id->first_num === $race_result->first_place){
+                dd($race_result->win);
+                $win=$race_result->win;
+                $amount= $b_race_details_id->amount;
+                $haraimodosi= $win*$amount;
+            }
+        }elseif($b_race_details_id->idevtification == '複勝'){
+        if ($b_race_details_id->first_num === $race_result->first_place) {
+            $multiple_wins = $race_result->multiple_wins;
+            $amount = $b_race_details_id->amount;
+            $haraimodosi = $multiple_wins * $amount;
+        }
+        } elseif ($b_race_details_id->idevtification == 'ワイド') {
+            if ($b_race_details_id->first_num === $race_result->first_place) {
+                $multiple_wins = $race_result->multiple_wins;
+                $amount = $b_race_details_id->amount;
+                $haraimodosi = $multiple_wins * $amount;
+            }
+        } elseif ($b_race_details_id->idevtification == '馬連') {
+             if ($b_race_details_id->first_num === $race_result->first_place &&
+                 $b_race_details_id->second_num === $race_result->second_place) {
+                $baren = $race_result->baren;
+                $amount = $b_race_details_id->amount;
+                $haraimodosi = $baren * $amount;
+                 }
+        } elseif ($b_race_details_id->idevtification == '馬単') {
+            if (
+                $b_race_details_id->first_num === $race_result->first_place &&
+                $b_race_details_id->second_num === $race_result->second_place
+            ) {
+                $horse_single = $race_result->horse_single;
+                $amount = $b_race_details_id->amount;
+                $haraimodosi = $horse_single * $amount;
+            }
+        } elseif ($b_race_details_id->idevtification == '三連複'){
+            if (
+                $b_race_details_id->first_num === $race_result->first_place &&
+                $b_race_details_id->second_num === $race_result->second_place&&
+                $b_race_details_id->third_num === $race_result->third_place
+            ) {
+                $triplets = $race_result->triplets;
+                $amount = $b_race_details_id->amount;
+                $haraimodosi = $triplets * $amount;
+            }
+        } elseif ($b_race_details_id->idevtification == '三連単') {
+            if (
+                $b_race_details_id->first_num === $race_result->first_place &&
+                $b_race_details_id->second_num === $race_result->second_place &&
+                $b_race_details_id->third_num === $race_result->third_place
+            ) {
+                $trio = $race_result->triplets;
+                $amount = $b_race_details_id->amount;
+                $haraimodosi = $trio * $amount;
+            }
+            
+        }
 
+        //回収率計算
+        // $recovery_rate=$haraimodosi/$num*100;
 
         // 日付検索
         if (isset($from) && isset($until)) {
@@ -62,7 +123,6 @@ class HomeController extends Controller
         }
         $keyword = $request->input('keyword');
         if($keyword){
-            // dd($keyword);
             // 全角スペースを半角に変換
             $spaceConversion = mb_convert_kana($keyword, 's');
 
@@ -87,9 +147,11 @@ class HomeController extends Controller
             'num' => $num, 
             'image' => $image,
             'keyword' =>$keyword,
+            // 'haraimodosi' =>$haraimodosi,
+            // 'recovery_rate' =>$recovery_rate,
         ]);
-
     }
+    
 
     public function rececreate(Validation $request)
     {
