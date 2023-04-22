@@ -35,39 +35,39 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         $image = User::find(Auth::id());
         $betting_ticket_registrations = new Betting_ticket_registration;
         // $betting_ticket_registrations = $betting_ticket_registrations->get();
         $betting_ticket_registrations = $betting_ticket_registrations
-        ->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id' );
+            ->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id');
 
         // $user_id = Auth::id();
         $from = $request->input('from');
         $until = $request->input('until');
         //購入した馬券の計算
-        $total_b=Betting_ticket_registration::selectRaw('sum(amount)as total_b')->where('user_id', Auth::id())->get();
+        $total_b = Betting_ticket_registration::selectRaw('sum(amount)as total_b')->where('user_id', Auth::id())->get();
         $string = $total_b;
         $num = preg_replace('/[^0-9]/', '', $string);
 
         //払い戻し計算
         $b_race_details_id = Betting_ticket_registration::where('user_id', Auth::id())->first();
-        $r_details_id = Race_detail::find( $b_race_details_id->race_details_id);
-        $race_result= Race_result::find($r_details_id->race_result_id);
-        $r_num= Race_result::select('first_place', 'second_place', 'third_place')->first();
-        
-        if($b_race_details_id->idevtification=='単勝'){
-            if($b_race_details_id->first_num === $race_result->first_place){
-                $win=$race_result->win;
-                $amount= $b_race_details_id->amount;
-                $haraimodosi= $win*$amount;
+        $r_details_id = Race_detail::find($b_race_details_id->race_details_id);
+        $race_result = Race_result::find($r_details_id->race_result_id);
+
+
+        if ($b_race_details_id->idevtification == '単勝') {
+            if ($b_race_details_id->first_num === $race_result->first_place) {
+                $win = $race_result->win;
+                $amount = $b_race_details_id->amount;
+                $haraimodosi = $win * $amount;
             }
-        }elseif($b_race_details_id->idevtification == '複勝'){
-        if ($b_race_details_id->first_num === $race_result->first_place) {
-            $multiple_wins = $race_result->multiple_wins;
-            $amount = $b_race_details_id->amount;
-            $haraimodosi = $multiple_wins * $amount;
-        }
+        } elseif ($b_race_details_id->idevtification == '複勝') {
+            if ($b_race_details_id->first_num === $race_result->first_place) {
+                $multiple_wins = $race_result->multiple_wins;
+                $amount = $b_race_details_id->amount;
+                $haraimodosi = $multiple_wins * $amount;
+            }
         } elseif ($b_race_details_id->idevtification == 'ワイド') {
             if ($b_race_details_id->first_num === $race_result->first_place) {
                 $multiple_wins = $race_result->multiple_wins;
@@ -75,12 +75,14 @@ class HomeController extends Controller
                 $haraimodosi = $multiple_wins * $amount;
             }
         } elseif ($b_race_details_id->idevtification == '馬連') {
-             if ($b_race_details_id->first_num === $race_result->first_place &&
-                 $b_race_details_id->second_num === $race_result->second_place) {
+            if (
+                $b_race_details_id->first_num === $race_result->first_place &&
+                $b_race_details_id->second_num === $race_result->second_place
+            ) {
                 $baren = $race_result->baren;
                 $amount = $b_race_details_id->amount;
                 $haraimodosi = $baren * $amount;
-                 }
+            }
         } elseif ($b_race_details_id->idevtification == '馬単') {
             if (
                 $b_race_details_id->first_num === $race_result->first_place &&
@@ -90,10 +92,10 @@ class HomeController extends Controller
                 $amount = $b_race_details_id->amount;
                 $haraimodosi = $horse_single * $amount;
             }
-        } elseif ($b_race_details_id->idevtification == '三連複'){
+        } elseif ($b_race_details_id->idevtification == '三連複') {
             if (
                 $b_race_details_id->first_num === $race_result->first_place &&
-                $b_race_details_id->second_num === $race_result->second_place&&
+                $b_race_details_id->second_num === $race_result->second_place &&
                 $b_race_details_id->third_num === $race_result->third_place
             ) {
                 $triplets = $race_result->triplets;
@@ -110,8 +112,11 @@ class HomeController extends Controller
                 $amount = $b_race_details_id->amount;
                 $haraimodosi = $trio * $amount;
             }
-            
+        } else {
+            $haraimodosi = 0;
         }
+
+
 
         //回収率計算
         // $recovery_rate=$haraimodosi/$num*100;
@@ -121,36 +126,36 @@ class HomeController extends Controller
             $betting_ticket_registrations = $betting_ticket_registrations->whereBetween("date", [$from, $until]);
         }
         $keyword = $request->input('keyword');
-        if($keyword){
+        if ($keyword) {
             // 全角スペースを半角に変換
             $spaceConversion = mb_convert_kana($keyword, 's');
 
             // 単語を半角スペースで区切り、配列にする
             $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
 
-        if (!empty($keyword)) {
+            if (!empty($keyword)) {
                 // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
-            foreach ($wordArraySearched as $value) {
-            $betting_ticket_registrations = $betting_ticket_registrations
-            ->where('idevtification', 'LIKE', "%{$value}%")
-            ->orWhere('place', 'LIKE', "%{$value}%");
+                foreach ($wordArraySearched as $value) {
+                    $betting_ticket_registrations = $betting_ticket_registrations
+                        ->where('idevtification', 'LIKE', "%{$value}%")
+                        ->orWhere('place', 'LIKE', "%{$value}%");
                 }
+            }
         }
-    }
-        $betting_ticket_registrations = $betting_ticket_registrations->where('user_id',Auth::id())->get();
+        $betting_ticket_registrations = $betting_ticket_registrations->where('user_id', Auth::id())->get();
 
         return view('home', [
             'betting_ticket_registrations' => $betting_ticket_registrations,
             'from' => $from,
             'until' => $until,
-            'num' => $num, 
+            'num' => $num,
             'image' => $image,
-            'keyword' =>$keyword,
+            'keyword' => $keyword,
             // 'haraimodosi' =>$haraimodosi,
             // 'recovery_rate' =>$recovery_rate,
         ]);
     }
-    
+
 
     public function rececreate(Validation $request)
     {
@@ -158,19 +163,17 @@ class HomeController extends Controller
         $race_details->date = $request->date;
         $race_details->place = $request->place;
         $race_details->race_name = $request->race_name;
-        
+
         $race_details->save();
 
         $race_details = Race_detail::orderBy('id', 'desc')->take(1)->get();
-        
+
         for ($a = 1; $a < 19; $a++) {
             $b[] = $a;
         };
         return view('administrator.create2', [
             'b' => $b,
-            'race_details'=> $race_details,
+            'race_details' => $race_details,
         ]);
     }
-
 }
- 

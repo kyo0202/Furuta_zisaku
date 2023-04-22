@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+<nav class="navbar navbar-light navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">レース結果一覧・編集削除</a>
+</nav>
+<br>
 @can('admin_only')
 <ul class="list-unstyled">
     @foreach ($list as $val)

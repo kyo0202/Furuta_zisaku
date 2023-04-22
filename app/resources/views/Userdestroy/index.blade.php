@@ -1,5 +1,9 @@
 @extends('layouts.app')
 @section('content')
+<nav class="navbar navbar-light navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">ユーザー削除画面</a>
+</nav>
+<br>
 <div class="container">
     @method('delete')
     <div class="table-responsive">

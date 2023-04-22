@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @section('content')
+
+<nav class="navbar navbar-light navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">ユーザーランキング表示画面</a>
+</nav>
+<br>
 <div class="container">
     <div class="table-responsive">
         <table class="table table-striped">
@@ -31,7 +36,7 @@
         </table>
         </form>
     </div>
-        @endsection
+    @endsection
     <style>
         .liked {
             color: red;
