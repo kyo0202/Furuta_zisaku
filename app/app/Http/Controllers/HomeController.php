@@ -55,6 +55,8 @@ class HomeController extends Controller
         $race_results[] = Race_result::find($r_details_id->race_result_id);
 
         $haraimodosi = 0;
+
+        
         foreach($race_results as $race_result){
             if ($race_detail_id->idevtification == '単勝') {
                 if ($race_detail_id->first_num == $race_result->first_place) {
