@@ -88,7 +88,7 @@ class HorseController extends Controller
         $race_details_id = Betting_ticket_registration::where('user_id', Auth::id())->where('race_details_id', $id)->first();
         $r_details_id = Race_detail::find($race_details_id->race_details_id);
         $race_result = Race_result::find($r_details_id->race_result_id);
-        $haraimodosi = 0;
+    
         if ($race_details_id->idevtification == '単勝') {
             if ($race_details_id->first_num == $race_result->first_place) {
                 $win = $race_result->win;
