@@ -24,9 +24,9 @@ class Validation2 extends FormRequest
     public function rules()
     {
         return [
-            'first_place' => 'required|numeric|max:2',
-            'second_place' => 'required|numeric|max:2',
-            'third_place' => 'required|numeric|max:2',
+            'first_place' => 'required|numeric',
+            'second_place' => 'required|numeric',
+            'third_place' => 'required|numeric',
             'win' => 'required|numeric',
             'multiple_wins1' => 'required|numeric',
             'multiple_wins2' => 'required|numeric',

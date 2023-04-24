@@ -34,6 +34,15 @@
                                     <th scope='col'>{{ $betting_ticket_registration->third_num }}</th>
                                     <th scope='col'>{{ $betting_ticket_registration->amount }}</th>
                                 </tr>
+                                @if($haraimodosi!=0)
+                                <th scope='col'>
+                                    <p class="text-danger">的中 払戻金額　￥{{ $haraimodosi }}</p>
+                                </th>
+                                @else
+                                <th scope='col'>
+                                    <p class="text-danger">払戻金額　￥{{ $haraimodosi }}</p>
+                                </th>
+                                @endif
                             </tbody>
                         </table>
                         <a href="{{ route('horse.edit',['horse' => $betting_ticket_registration['id']]) }}">
@@ -43,6 +52,6 @@
                             @method('delete')
                             @csrf
                             <input type="submit" value="削除" class="btn btn-danger" onclick='return confirm("削除しますか？");'>
-                        </form>    
+                        </form>
                     </div>
                     @endsection

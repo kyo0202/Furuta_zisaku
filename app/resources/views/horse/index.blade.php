@@ -12,12 +12,14 @@
                 <tr>
                     <th>{{ __('画像') }}</th>
                     <th>{{ __('ニックネーム') }}</th>
+                    <th>{{ __('回収率') }}</th>
                 </tr>
             </thead>
             <tr>
                 @foreach($users as $user)
                 <td><img src="{{asset($user->image_path)}}" width="100" height="100"></td>
-                <td><a href="{{route('profile.index')}}">{{$user->name}}</a>
+                <td><a>{{$user->name}}</a>
+                <td><a>{{$recovery_rate->recovery_rate}}%</a>
                     <!-- Review.phpに作ったisLikedByメソッドをここで使用 -->
                     @if (!$review->isLikedBy(Auth::user()))
                     <span class="likes">

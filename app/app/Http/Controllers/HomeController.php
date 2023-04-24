@@ -33,12 +33,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request)
+    public function index(Request $request,$id)
     {
 
         $image = User::find(Auth::id());
         $betting_ticket_registrations = new Betting_ticket_registration;
-        // $betting_ticket_registrations = $betting_ticket_registrations->get();
         $betting_ticket_registrations = $betting_ticket_registrations
             ->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id');
 
@@ -50,76 +49,74 @@ class HomeController extends Controller
         $string = $total_b;
         $num = preg_replace('/[^0-9]/', '', $string);
 
-        //払い戻し計算
-        $b_race_details_id = Betting_ticket_registration::where('user_id', Auth::id())->first();
-        $r_details_id = Race_detail::find($b_race_details_id->race_details_id);
+        //回収率計算
+        $race_details_id = Betting_ticket_registration::where('user_id', Auth::id())->where('race_details_id',$id)->first();
+        $r_details_id = Race_detail::find($race_details_id->race_details_id);
         $race_result = Race_result::find($r_details_id->race_result_id);
-
-
-        if ($b_race_details_id->idevtification == '単勝') {
-            if ($b_race_details_id->first_num === $race_result->first_place) {
+        $haraimodosi = 0;
+        foreach($race_details_id as $race_detail_id){
+        if ($race_detail_id->idevtification == '単勝') {
+            if ($race_detail_id->first_num == $race_result->first_place) {
                 $win = $race_result->win;
-                $amount = $b_race_details_id->amount;
+                $amount = $race_detail_id->amount;
                 $haraimodosi = $win * $amount;
             }
-        } elseif ($b_race_details_id->idevtification == '複勝') {
-            if ($b_race_details_id->first_num === $race_result->first_place) {
+        } elseif ($race_detail_id->idevtification == '複勝') {
+            if ($race_detail_id->first_num == $race_result->first_place) {
                 $multiple_wins = $race_result->multiple_wins;
-                $amount = $b_race_details_id->amount;
+                $amount = $race_detail_id->amount;
                 $haraimodosi = $multiple_wins * $amount;
             }
-        } elseif ($b_race_details_id->idevtification == 'ワイド') {
-            if ($b_race_details_id->first_num === $race_result->first_place) {
+        } elseif ($race_detail_id->idevtification == 'ワイド') {
+            if ($race_detail_id->first_num == $race_result->first_place) {
                 $multiple_wins = $race_result->multiple_wins;
-                $amount = $b_race_details_id->amount;
+                $amount = $race_detail_id->amount;
                 $haraimodosi = $multiple_wins * $amount;
             }
-        } elseif ($b_race_details_id->idevtification == '馬連') {
+        } elseif ($race_detail_id->idevtification == '馬連') {
             if (
-                $b_race_details_id->first_num === $race_result->first_place &&
-                $b_race_details_id->second_num === $race_result->second_place
+                $race_detail_id->first_num == $race_result->first_place &&
+                $race_detail_id->second_num == $race_result->second_place
             ) {
                 $baren = $race_result->baren;
-                $amount = $b_race_details_id->amount;
+                $amount = $race_detail_id->amount;
                 $haraimodosi = $baren * $amount;
             }
-        } elseif ($b_race_details_id->idevtification == '馬単') {
+        } elseif ($race_detail_id->idevtification == '馬単') {
             if (
-                $b_race_details_id->first_num === $race_result->first_place &&
-                $b_race_details_id->second_num === $race_result->second_place
+                $race_detail_id->first_num == $race_result->first_place &&
+                $race_detail_id->second_num == $race_result->second_place
             ) {
                 $horse_single = $race_result->horse_single;
-                $amount = $b_race_details_id->amount;
+                $amount = $race_detail_id->amount;
                 $haraimodosi = $horse_single * $amount;
             }
-        } elseif ($b_race_details_id->idevtification == '三連複') {
+        } elseif ($race_detail_id->idevtification == '三連複') {
             if (
-                $b_race_details_id->first_num === $race_result->first_place &&
-                $b_race_details_id->second_num === $race_result->second_place &&
-                $b_race_details_id->third_num === $race_result->third_place
+                $race_detail_id->first_num == $race_result->first_place &&
+                $race_detail_id->second_num == $race_result->second_place &&
+                $race_detail_id->third_num == $race_result->third_place
             ) {
                 $triplets = $race_result->triplets;
-                $amount = $b_race_details_id->amount;
+                $amount = $race_detail_id->amount;
                 $haraimodosi = $triplets * $amount;
             }
-        } elseif ($b_race_details_id->idevtification == '三連単') {
+        } elseif ($race_detail_id->idevtification == '三連単') {
             if (
-                $b_race_details_id->first_num === $race_result->first_place &&
-                $b_race_details_id->second_num === $race_result->second_place &&
-                $b_race_details_id->third_num === $race_result->third_place
+                $race_detail_id->first_num == $race_result->first_place &&
+                $race_detail_id->second_num == $race_result->second_place &&
+                $race_detail_id->third_num == $race_result->third_place
             ) {
                 $trio = $race_result->triplets;
-                $amount = $b_race_details_id->amount;
+                $amount = $race_detail_id->amount;
                 $haraimodosi = $trio * $amount;
             }
         } else {
             $haraimodosi = 0;
         }
+     }
+    
 
-
-
-        //回収率計算
-        // $recovery_rate=$haraimodosi/$num*100;
 
         // 日付検索
         if (isset($from) && isset($until)) {
@@ -151,7 +148,7 @@ class HomeController extends Controller
             'num' => $num,
             'image' => $image,
             'keyword' => $keyword,
-            // 'haraimodosi' =>$haraimodosi,
+            'haraimodosi' =>$haraimodosi,
             // 'recovery_rate' =>$recovery_rate,
         ]);
     }

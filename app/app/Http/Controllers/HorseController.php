@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Betting_ticket_registration; 
 use App\Race_detail;
+use App\Race_result;
 use App\User;
 use App\Like;
 use Illuminate\Support\Facades\Auth;
@@ -21,10 +22,12 @@ class HorseController extends Controller
     {
         $review=new User;
         $users = User::all();
+        $recovery_rate = Betting_ticket_registration::orderBy('recovery_rate', 'desc')->first();
         return view('horse.index', [
             'users' => $users,
             'item' => $users,
             'review' => $review,
+            'recovery_rate' =>$recovery_rate,
         ]);
     }
 
@@ -42,7 +45,6 @@ class HorseController extends Controller
         };
         $race_details = Race_detail::orderBy('id', 'desc')->get();
         $users= User::find(Auth::id());
-        // $race_details = Race_detail::select('place','race_name')->get();
         return view('horse.create', [
             'race_details' => $race_details,
             'b' => $b, 
@@ -83,9 +85,73 @@ class HorseController extends Controller
     {
         $val = Race_detail::findOrFail($id);
         $betting_ticket_registration = Betting_ticket_registration::where('race_details_id',$id)->first();
+        $race_details_id = Betting_ticket_registration::where('user_id', Auth::id())->where('race_details_id', $id)->first();
+        $r_details_id = Race_detail::find($race_details_id->race_details_id);
+        $race_result = Race_result::find($r_details_id->race_result_id);
+        $haraimodosi = 0;
+        if ($race_details_id->idevtification == '単勝') {
+            if ($race_details_id->first_num == $race_result->first_place) {
+                $win = $race_result->win;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $win * $amount;
+            }
+        } elseif ($race_details_id->idevtification == '複勝') {
+            if ($race_details_id->first_num == $race_result->first_place) {
+                $multiple_wins = $race_result->multiple_wins;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $multiple_wins * $amount;
+            }
+        } elseif ($race_details_id->idevtification == 'ワイド') {
+            if ($race_details_id->first_num == $race_result->first_place) {
+                $multiple_wins = $race_result->multiple_wins;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $multiple_wins * $amount;
+            }
+        } elseif ($race_details_id->idevtification == '馬連') {
+            if (
+                $race_details_id->first_num == $race_result->first_place &&
+                $race_details_id->second_num == $race_result->second_place
+            ) {
+                $baren = $race_result->baren;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $baren * $amount;
+            }
+        } elseif ($race_details_id->idevtification == '馬単') {
+            if (
+                $race_details_id->first_num == $race_result->first_place &&
+                $race_details_id->second_num == $race_result->second_place
+            ) {
+                $horse_single = $race_result->horse_single;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $horse_single * $amount;
+            }
+        } elseif ($race_details_id->idevtification == '三連複') {
+            if (
+                $race_details_id->first_num == $race_result->first_place &&
+                $race_details_id->second_num == $race_result->second_place &&
+                $race_details_id->third_num == $race_result->third_place
+            ) {
+                $triplets = $race_result->triplets;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $triplets * $amount;
+            }
+        } elseif ($race_details_id->idevtification == '三連単') {
+            if (
+                $race_details_id->first_num == $race_result->first_place &&
+                $race_details_id->second_num == $race_result->second_place &&
+                $race_details_id->third_num == $race_result->third_place
+            ) {
+                $trio = $race_result->triplets;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $trio * $amount;
+            }
+        } else {
+            $haraimodosi = 0;
+        }
         return view('horse.show',[
             'betting_ticket_registration'=> $betting_ticket_registration,
-            'val' => $val
+            'val' => $val,
+            'haraimodosi' => $haraimodosi,
        ]);
     }
 
