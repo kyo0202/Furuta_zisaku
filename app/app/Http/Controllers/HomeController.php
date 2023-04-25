@@ -39,7 +39,7 @@ class HomeController extends Controller
         $image = User::find(Auth::id());
         $betting_ticket_registrations = new Betting_ticket_registration;
         $betting_ticket_registrations = $betting_ticket_registrations
-            ->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id');
+            ->select('date','place', 'race_details_id','idevtification','betting_ticket_registrations.id')->join('race_details', 'betting_ticket_registrations.race_details_id', 'race_details.id');
 
         // $user_id = Auth::id();
         $from = $request->input('from');
@@ -50,8 +50,10 @@ class HomeController extends Controller
         $num = preg_replace('/[^0-9]/', '', $string);
 
         // $race_detail_id = Betting_ticket_registration::where('user_id', Auth::id())->select('race_details_id')->first();
+      
         // $r_details_id = Race_detail::find($race_detail_id->race_details_id);
-        // $race_results = Race_result::find($r_details_id->race_result_id);
+        // $race_results[] = Race_result::find($r_details_id->race_result_id);
+
         // $haraimodosi = 0;
 
         
@@ -144,7 +146,6 @@ class HomeController extends Controller
             }
         }
         $betting_ticket_registrations = $betting_ticket_registrations->where('user_id', Auth::id())->get();
-
         return view('home', [
             'betting_ticket_registrations' => $betting_ticket_registrations,
             'from' => $from,
