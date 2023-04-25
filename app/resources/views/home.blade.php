@@ -33,17 +33,17 @@
                     <div class="col-md-18">
                         <div class="container">
                             <div class="row">
-                                <div class="col">購 入 金 額 ￥{{"$num"}}</div>
-                                <div class="col">払 戻 金 額　￥{{"$haraimodosi"}}</div>
-                                @if($shyushi< 0) <div class="col">
-                                    <p class="text-danger"> 収 支　￥{{"$shyushi"}}</p>
+                                <div class="col">購 入 金 額 ￥$num</div>
+                                <div class="col">払 戻 金 額　￥haraimodosi</div>
+
+                                    <p class="text-danger"> 収 支　￥shyushi</p>
                             </div>
-                            @elseif($shyushi> 0)
+                        
                             <div class="col">
-                                <p class="text-primary"> 収 支　￥{{"$shyushi"}}</p>
+                                <p class="text-primary"> 収 支　￥shyushi</p>
                             </div>
-                            @endif
-                            <div class="col">回 収 率　{{"$recovery_rate"}}％</div>
+                        
+                            <div class="col">回 収 率　recovery_rate％</div>
                         </div>
                         <form action="route('horse.show',['horse'=>$betting_ticket_registration['id']])">
                             <div class="card-header">月別収支リスト</div>
