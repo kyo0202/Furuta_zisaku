@@ -39,7 +39,7 @@ class HorseController extends Controller
     public function create()
     {
         $idevtifications =[];
-        $idevtifications = ['単勝', '複勝', '馬連', '馬単', 'ワイド', '三連複', '三連複',];
+        $idevtifications = ['単勝', '複勝', '馬連', '馬単', 'ワイド', '三連複', '三連単',];
         for ($a = 1; $a < 19; $a++) {
             $b[] = $a;
         };
@@ -83,91 +83,133 @@ class HorseController extends Controller
      */
     public function show($id)
     {
-        $val = Race_detail::find($id);
-        $betting_ticket_registration = Betting_ticket_registration::where('race_details_id',$id)->first();
-        $race_details_id = Betting_ticket_registration::where('user_id', Auth::id())->where('race_details_id', $id)->first();
+        $betting_ticket_registration = Betting_ticket_registration::find($id);
+        $race_details_id =Betting_ticket_registration::find($id);
+        $val = Race_detail::find($race_details_id->race_details_id);
         $r_details_id = Race_detail::find($race_details_id->race_details_id);
         $race_result = Race_result::find($r_details_id->race_result_id);
         $haraimodosi = 0;
-        // dd($race_result->first_place);
-        // if ($race_details_id->idevtification == '単勝') {
-        //     if ($race_details_id->first_num == $race_result->first_place) {
-        //         $win = $race_result->win;
-        //         $amount = $race_details_id->amount;
-        //         $haraimodosi = $win * $amount;
-        //     }
-        // } elseif ($race_details_id->idevtification == '複勝') {
-        //     if (
-        //         $race_details_id->first_num == $race_result->first_place ||
-        //         $race_details_id->second_num == $race_result->second_place ||
-        //         $race_details_id->third_num == $race_result->third_place
-        //     ) {
-        //         $multiple_wins = $race_result->multiple_wins;
-        //         $amount = $race_details_id->amount;
-        //         $haraimodosi = $multiple_wins * $amount;
-        //     }
-        // } elseif ($race_details_id->idevtification == 'ワイド') {
-        //     if (
-        //         $race_details_id->first_num == $race_result->first_place &&
-        //         $race_details_id->second_num == $race_result->second_place ||
-        //         $race_details_id->first_num == $race_result->first_place &&
-        //         $race_details_id->third_num == $race_result->third_place ||
-        //         $race_details_id->second_num == $race_result->second_place &&
-        //         $race_details_id->third_num == $race_result->third_place
-        //     ) {
-        //         $wide = $race_result->wide;
-        //         $amount = $race_details_id->amount;
-        //         $haraimodosi = $wide * $amount;
-        //     }
-        // } elseif ($race_details_id->idevtification == '馬連') {
-        //     if ($race_details_id->first_num == $race_result->first_place ||
-        //         $race_details_id->first_num == $race_result->second_place &&
-        //         $race_details_id->second_num == $race_result->second_place||
-        //         $race_details_id->second_num == $race_result->second_place &&
-        //         $race_details_id->first_num == $race_result->first_place
-        //     ) {
-        //         $baren = $race_result->baren;
-        //         $amount = $race_details_id->amount;
-        //         $haraimodosi = $baren * $amount;
-        //     }
-        // } elseif ($race_details_id->idevtification == '馬単') {
-        //     if (
-        //         $race_details_id->first_num == $race_result->first_place &&
-        //         $race_details_id->second_num == $race_result->second_plac
-        //     ) {
-        //         $horse_single = $race_result->horse_single;
-        //         $amount = $race_details_id->amount;
-        //         $haraimodosi = $horse_single * $amount;
-        //     }
+        if ($race_details_id->idevtification == '単勝') {
+            if ($race_details_id->first_num == $race_result->first_place) {
+                $win = $race_result->win;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $win * $amount / 1000;
+            }
+        } elseif ($race_details_id->idevtification == '複勝') {
+            if ($race_details_id->first_num == $race_result->first_place ) {
+                // 全角スペースを半角に変換
+                $spaceConversion = mb_convert_kana($race_result->multiple_wins, 's');
+                
+                // 単語を半角スペースで区切り、配列にする
+                $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+                $multiple_wins = $wordArraySearched[0];
+                $amount = $race_details_id->amount;
+                $haraimodosi = $multiple_wins * $amount / 100;
+            }elseif($race_details_id->second_num == $race_result->second_place){
+                // 全角スペースを半角に変換
+                $spaceConversion = mb_convert_kana($race_result->multiple_wins, 's');
 
-        // } elseif ($race_details_id->idevtification == '三連複') {
-        //     if ($race_details_id->first_num == $race_result->first_place ||
-        //         $race_details_id->first_num == $race_result->second_place ||
-        //         $race_details_id->first_num == $race_result->third_place &&
-        //         $race_details_id->second_num == $race_result->first_place ||
-        //         $race_details_id->second_num == $race_result->second_place ||
-        //         $race_details_id->second_num == $race_result->third_place &&
-        //         $race_details_id->third_num == $race_result->first_place ||
-        //         $race_details_id->third_num == $race_result->second_place ||
-        //         $race_details_id->third_num == $race_result->third_place
-        //     ) {
-        //         $triplets = $race_result->triplets;
-        //         $amount = $race_details_id->amount;
-        //         $haraimodosi = $triplets * $amount;
-        //     }
-        // } elseif ($race_details_id->idevtification == '三連単') {
-        //     if (
-        //         $race_details_id->first_num == $race_result->first_place &&
-        //         $race_details_id->second_num == $race_result->second_place &&
-        //         $race_details_id->third_num == $race_result->third_place
-        //     ) {
-        //         $trio = $race_result->trio;
-        //         $amount = $race_details_id->amount;
-        //         $haraimodosi = $trio * $amount;
-        //     }
-        // } else {
-        //     $haraimodosi = 0;
-        // }
+                // 単語を半角スペースで区切り、配列にする
+                $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+                $multiple_wins = $wordArraySearched[1];
+                $amount = $race_details_id->amount;
+                $haraimodosi = $multiple_wins * $amount / 100;
+            }elseif($race_details_id->third_num == $race_result->third_place){
+                // 全角スペースを半角に変換
+                $spaceConversion = mb_convert_kana($race_result->multiple_wins, 's');
+
+                // 単語を半角スペースで区切り、配列にする
+                $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+                $multiple_wins = $wordArraySearched[2];
+                $amount = $race_details_id->amount;
+                $haraimodosi = $multiple_wins * $amount / 100;
+            }
+        } elseif ($race_details_id->idevtification == 'ワイド') {
+            if (
+                $race_details_id->first_num == $race_result->first_place &&
+                $race_details_id->second_num == $race_result->second_place ) {
+                // 全角スペースを半角に変換
+                $spaceConversion = mb_convert_kana($race_result->wide, 's');
+
+                // 単語を半角スペースで区切り、配列にする
+                $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+                $wide = $wordArraySearched[0];
+                $amount = $race_details_id->amount;
+                $haraimodosi = $wide * $amount / 100;
+               
+            }elseif(
+                $race_details_id->first_num == $race_result->first_place &&
+                $race_details_id->third_num == $race_result->third_place )
+                {
+                // 全角スペースを半角に変換
+                $spaceConversion = mb_convert_kana($race_result->wide, 's');
+
+                // 単語を半角スペースで区切り、配列にする
+                $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+                $wide = $wordArraySearched[1];
+                $amount = $race_details_id->amount;
+                $haraimodosi = $wide * $amount / 100;
+            }elseif(
+                $race_details_id->second_num == $race_result->second_place &&
+                $race_details_id->third_num == $race_result->third_place)
+                {
+                // 全角スペースを半角に変換
+                $spaceConversion = mb_convert_kana($race_result->wide, 's');
+
+                // 単語を半角スペースで区切り、配列にする
+                $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+                $wide = $wordArraySearched[2];
+                $amount = $race_details_id->amount;
+                $haraimodosi = $wide * $amount / 100;
+            }
+        } elseif ($race_details_id->idevtification == '馬連') {
+            if ($race_details_id->first_num == $race_result->first_place &&
+                $race_details_id->first_num == $race_result->second_place ||
+                $race_details_id->second_num == $race_result-> second_place &&
+                $race_details_id->second_num == $race_result->first_place 
+            ) {
+                $baren = $race_result->baren;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $baren * $amount / 100;
+            }
+        } elseif ($race_details_id->idevtification == '馬単') {
+            if (
+                $race_details_id->first_num == $race_result->first_place &&
+                $race_details_id->second_num == $race_result->second_place
+            ) {
+                $horse_single = $race_result->horse_single;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $horse_single * $amount / 100;
+            }
+        } elseif ($race_details_id->idevtification == '三連単') {
+            if (
+                $race_details_id->first_num == $race_result->first_place &&
+                $race_details_id->second_num == $race_result->second_place &&
+                $race_details_id->third_num == $race_result->third_place
+            ) {
+                $trio = $race_result->trio;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $trio * $amount / 100;
+            }
+            
+        } elseif ($race_details_id->idevtification == '三連複') {
+            if ($race_details_id->first_num == $race_result->first_place ||
+                $race_details_id->first_num == $race_result->second_place ||
+                $race_details_id->first_num == $race_result->third_place &&
+                $race_details_id->second_num == $race_result->first_place ||
+                $race_details_id->second_num == $race_result->second_place ||
+                $race_details_id->second_num == $race_result->third_place &&
+                $race_details_id->third_num == $race_result->first_place ||
+                $race_details_id->third_num == $race_result->second_place ||
+                $race_details_id->third_num == $race_result->third_place
+            ) {
+                $triplets = $race_result->triplets;
+                $amount = $race_details_id->amount;
+                $haraimodosi = $triplets * $amount / 100;
+            }
+        } else {
+            $haraimodosi = 0;
+        }
         return view('horse.show',[
             'betting_ticket_registration'=> $betting_ticket_registration,
             'val' => $val,
@@ -187,7 +229,7 @@ class HorseController extends Controller
             $b[] = $a;
         };
         $idevtification = [];
-        $idevtification = ['単勝', '複勝', '馬連', '馬単', 'ワイド', '三連複', '三連複',];
+        $idevtification = ['単勝', '複勝', '馬連', '馬単', 'ワイド', '三連複', '三連単',];
         $betting_ticket_registration = Betting_ticket_registration::find($id);
         $race_detail=Race_detail::find($betting_ticket_registration->race_details_id);
         return view('horse.edit', [
