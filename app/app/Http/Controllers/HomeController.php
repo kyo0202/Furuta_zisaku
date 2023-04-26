@@ -50,12 +50,12 @@ class HomeController extends Controller
         $num = preg_replace('/[^0-9]/', '', $string);
 
         $race_detail_id = Betting_ticket_registration::where('user_id', Auth::id())->select('race_details_id')->first();
+        $haraimodosi = 0;
 
-        if ($race_detail_id) {
+        if (isset($race_detail_id)) {
             $r_details_id = Race_detail::find($race_detail_id->race_details_id);
             if ($r_details_id) {
                 $race_result = Race_result::find($r_details_id->race_result_id);
-                $haraimodosi = 0;
 
                 if ($race_detail_id->idevtification == '単勝') {
                     if ($race_detail_id->first_num == $race_result->first_place) {
@@ -181,11 +181,10 @@ class HomeController extends Controller
                 }
             }
         }
-        //収支計算
-        $syushi=$haraimodosi -$num;
-
-        //回収率計算
-        $recovery_rate= $haraimodosi/$num*100;
+        // //収支計算
+        // $syushi= $haraimodosi-$num;
+        // //回収率計算
+        // $recovery_rate= $haraimodosi/$num*100;
 
         // 日付検索
         if (isset($from) && isset($until)) {
@@ -217,8 +216,8 @@ class HomeController extends Controller
             'image' => $image,
             'keyword' => $keyword,
             'haraimodosi' => $haraimodosi,
-            'shyushi' => $syushi,
-            'recovery_rate' =>$recovery_rate,
+            // 'shyushi' => $syushi,
+            // 'recovery_rate' =>$recovery_rate,
         ]);
     }
 
