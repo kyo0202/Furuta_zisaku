@@ -40,7 +40,7 @@
                                 </th>
                                 @else
                                 <th scope='col'>
-                                    <p class="text-danger">払戻金額　￥{{ $haraimodosi }}</p>
+                                    <p>払戻金額　￥{{ $haraimodosi }}</p>
                                 </th>
                                 @endif
                             </tbody>

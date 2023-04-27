@@ -34,45 +34,47 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col">購 入 金 額 ￥{{"$num"}}</div>
-                                <div class="col">払 戻 金 額　￥haraimodosi</div>
-                
-                                <div class="col">
-                                    <p class="text-primary"> 収 支　￥shyushi</p>
-                                </div>
-                        
-                                <div class="col">回 収 率　recovery_rate％</div>
+                                <div class="col">払 戻 金 額　￥{{"$haraimodosi"}}</div>
+                                @if($haraimodosi< 0) <div class="col">
+                                    <p class="text-primary"> 収 支　￥{{"$shyushi"}}</p>
                             </div>
-                            <form action="route('horse.show',['horse'=>$betting_ticket_registration['id']])">
-                                <div class="card-header">月別収支リスト</div>
-                                <div class="container">
-                                    <div class="row">
-                                        @for($i = 1; $i < 13; $i++) <div class="col-3">
-                                            <div class="card">{{$i}}月
-                                            </div>
-                                            @foreach ($betting_ticket_registrations as $betting_ticket_registration)
-                                            @if($i==$betting_ticket_registration->date->format('n'))
-                                            <td>
-                                                <div class="col"><a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日') }} {{$betting_ticket_registration->place}} {{$betting_ticket_registration->idevtification}}{{$betting_ticket_registration->amount}}</a>
-                                                </div>
-                                            </td>
-                                            @elseif(empty($betting_ticket_registration->date->format('n')))
-                                            <td> </td>
-                                            @endif
-                                            @endforeach
-                                    </div>
-                                    @endfor
-                                </div>
-                                <div class="card-body">
-                                    @if (session('status'))
-                                    <div class="alert alert-success" role="alert">
-                                        {{ session('status') }}
-                                    </div>
-                                    @endif
-
-                                </div>
+                            @elseif($haraimodosi> 0) <div class="col">
+                                <p class="text-danger"> 収 支　￥{{"$shyushi"}}</p>
+                            </div>
+                            @endif
+                            <div class="col">回 収 率　{{"$recovery_rate"}}％</div>
                         </div>
-                        </form>
+                        <form action="route('horse.show',['horse'=>$betting_ticket_registration['id']])">
+                            <div class="card-header">月別収支リスト</div>
+                            <div class="container">
+                                <div class="row">
+                                    @for($i = 1; $i < 13; $i++) <div class="col-3">
+                                        <div class="card">{{$i}}月
+                                        </div>
+                                        @foreach ($betting_ticket_registrations as $betting_ticket_registration)
+                                        @if($i==$betting_ticket_registration->date->format('n'))
+                                        <td>
+                                            <div class="col"><a href="{{ route('horse.show',['horse'=>$betting_ticket_registration['id']])}}">{{ $betting_ticket_registration->date->format('n月j日') }} {{$betting_ticket_registration->place}} {{$betting_ticket_registration->idevtification}}{{$betting_ticket_registration->amount}}</a>
+                                            </div>
+                                        </td>
+                                        @elseif(empty($betting_ticket_registration->date->format('n')))
+                                        <td> </td>
+                                        @endif
+                                        @endforeach
+                                </div>
+                                @endfor
+                            </div>
+                            <div class="card-body">
+                                @if (session('status'))
+                                <div class="alert alert-success" role="alert">
+                                    {{ session('status') }}
+                                </div>
+                                @endif
+
+                            </div>
                     </div>
+                    </form>
                 </div>
             </div>
-            @endsection
+        </div>
+        @endsection

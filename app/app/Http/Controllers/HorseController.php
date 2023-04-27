@@ -93,7 +93,7 @@ class HorseController extends Controller
             if ($race_details_id->first_num == $race_result->first_place) {
                 $win = $race_result->win;
                 $amount = $race_details_id->amount;
-                $haraimodosi = $win * $amount / 1000;
+                $haraimodosi = $win * $amount / 100;
             }
         } elseif ($race_details_id->idevtification == '複勝') {
             if ($race_details_id->first_num == $race_result->first_place ) {
